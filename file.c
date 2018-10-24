@@ -1,18 +1,25 @@
-#include<stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
-#include<fcntl.h>
-// #include<sys/types.h>
-// #include<sys/stat.h>
-// #include<errno.h>
+#include <string.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 int main(){
-  int fd = open("file.txt", O_RDONLY | O_CREAT);
-  printf("Opened file.txt: %d\n", fd);
+  int fd = open("file.txt", O_RDONLY);
+  printf("Open file.txt: %d\n", fd);
+  char *buf1 = malloc(20);
+  printf("Read %zd bytes in file.txt:\n%s", read(fd, buf1, 20), buf1);
+  printf("Close file.txt: %d\n\n", close(fd));
 
-  char *buf = malloc(10);
-  printf("Read %d bytes in file.txt:\n%s\n", read(fd, buf, 10), buf);
+  fd = open("file.txt", O_RDWR);
+  printf("Open file.txt: %d\n", fd);
+  char *wr = "beep\nBeep\nBEEP";
+  printf("Write %zd bytes in file.txt:\n", write(fd, wr, strlen(wr)));
+  printf("Close file.txt: %d\n\n", close(fd));
 
-  // write();
-
-  printf("Closed file.txt: %d\n", close(fd));
+  fd = open("file.txt", O_RDONLY);
+  printf("Open file.txt: %d\n", fd);
+  char *buf2 = malloc(20);
+  printf("Read %zd bytes in file.txt:\n%s", read(fd, buf2, 20), buf2);
+  printf("Close file.txt: %d\n", close(fd));
 }
